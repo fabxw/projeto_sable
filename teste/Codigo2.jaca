@@ -1,0 +1,71 @@
+classe _Positivos
+
+{
+Feito pelos alunos:
+Tiago Oliveira Vieira
+Fabrício Oliveira Caetano
+}
+
+início
+    var real númeroUm;
+    var real númeroDois;
+    const positivo bool := true;
+    
+    procedimento setnúmeroUm (real novo_númeroUm)
+        númeroUm := novo_númeroUm;
+        
+    procedimento setnúmeroDois (real novo_númeroDois)
+        númeroDois := novo_númeroDois;
+        
+    procedimento positividade (bool positivo);
+        
+fim
+
+classe _Principal
+início
+    objeto _ES interface;
+
+    >>> procedimento principal ()
+    início
+                        
+        objeto _Positivos positivos;
+        
+        var real numUm;
+        var real numDois;
+        const real nulo := 0;
+              
+        numUm := interface.lê();
+        numDois := interface.lê();
+        
+        se(positivos == verdade)
+        início
+            interface.imprime('É positivo');
+        fim
+        senão
+        início
+        	interface.imprime('É negativo');
+        fim
+        
+        se(positivos == falso)
+        início
+            interface.imprime('É negativo');
+        fim
+        
+        se(-1 < numUm)
+        início
+        	interface.imprime('Positivo');
+        fim
+        
+        se(!positivo)
+        início
+        	interface.imprime('É negativo');
+        fim
+        
+        #redundâcia para mostrar o uso
+        se(positivos.positivo)
+        início
+        	interface.imprime('É positivo');
+        fim
+            
+    fim
+fim

@@ -1,0 +1,233 @@
+Package jaca;
+
+Helpers
+ 
+ digito = ['0' .. '9'];
+ espaco = ' ';
+ rc = 13;
+ tab = 09;
+ nl = 10;
+ 
+ all = [0 .. 0xFFFF];
+ exponent_part = ('e' | 'E') '-' digito;
+ fractional_constant = digito? ',' digito+ | digito+;
+ real_constant = fractional_constant exponent_part? |digito exponent_part;
+
+ letra_normal = (['a'..'z'] | ['A'..'Z']);
+ letra_acentuada = (['À'..'Ã'] | ['Ç'..'Ê'] | ['É'..'Ê'] | ['Ì'..'Î'] | ['Ò'..'Õ'] | ['Ù'..'Û'] | ['à'..'ã'] | ['ç'..'ê'] | ['ì'..'î'] | ['ò'..'õ'] |['ù'..'û']);
+ under = '_';
+ letra = (letra_normal | letra_acentuada);
+ palavra = letra+ (letra+ | under+);
+ char_vazio = (espaco | rc | nl | tab);
+ all_linha = [all - [nl + rc]];
+ all_bloco = [all - '{'];
+ 
+Tokens
+ classe = 'classe';
+ filha = 'filha da classe';
+ output = '''all_linha+'''; 
+ ampersand = '&';
+ pontoevirgula = ';';
+ fim = 'fim';
+ inicio = 'início';
+ obj = 'objeto';
+ var = 'var';
+ constante = 'const';
+ inicializacao = ':=';
+ booleano = 'bool';
+ real = 'real';
+ dec_procedimento = '>>>';
+ procedimento = 'procedimento';
+ funcao = 'função';
+ virgula = ',';
+ se = 'se';
+ enquanto = 'enquanto';
+ senao = 'senão';
+ ponto = '.';
+ verdade = 'verdade';
+ falso = 'falso';
+ numero = digito+ | real_constant; 
+ id = palavra+;
+ id_classe = '_' palavra+;
+ soma = '+';
+ menos = '-';
+ mult = '*';
+ div = '/';
+ mod = '%';
+ igualdade = '==';
+ menor_que = '<';
+ menor_igual_que = '<=';
+ diferente = '!';
+ and = 'e';
+ ou = 'ou';
+ par_esq = '(';
+ par_dir = ')';
+ comentario_linha = '#' all_linha+;
+ comentario_bloco = '{' (all_bloco+) '}';
+ barra = '|';
+ 
+ vazio = char_vazio+;
+ vazio_n_ignorado = char_vazio+;
+
+
+
+Ignored Tokens
+ vazio, comentario_linha, comentario_bloco;
+ 
+Productions
+
+ programa = 
+ 	{programa} familia [ini]:def_classe [fim]:def_classe*;
+  
+ def_classe = 
+	{classe} classe id_classe inicio atributos* metodos* fim;
+  	
+ relacao = 
+	{relacao} classe [ini]:id_classe filha [fim]:id_classe;
+  
+ familia = 
+	{familia} relacao relacoes* pontoevirgula;
+ 
+ relacoes = 
+ 	{relacoes} ampersand relacao;
+  
+ atributos = 
+	{dec_obj} dec_obj atributos
+	|{dec_var} dec_var atributos
+	|{dec_cons} dec_cons atributos;
+
+ metodos = 
+ 	{dec_proced} dec_proced
+ 	|{dec_funcao} dec_funcao;
+ 	
+ dec_obj = 
+ 	{dec_obj} obj id_classe id pontoevirgula;
+ 	
+ dec_var = 
+ 	{dec_var_real} var tipo_primitivo id pontoevirgula;
+
+ 	
+ dec_cons = 
+ 	{dec_constante_real} constante tipo_primitivo inicializar pontoevirgula;
+ 	
+ inicializar = 
+ 	{inicializar} id inicializacao exp;
+ 
+ tipo_primitivo = 
+ 	{real} real
+ 	|{booleano} booleano;
+ 	
+ tipo_classe = 
+ 	{tipo_classe} id_classe;
+ 
+ tipo = 
+ 	{tipo_primitivo} tipo_primitivo
+ 	|{tipo_classe} tipo_classe;
+ 	
+ dec_funcao = 
+  	{dec_funcao_real} funcao tipo id par_esq parametros  par_dir pontoevirgula
+ 	|{dec_funcao_booleana_exp} funcao tipo id par_esq parametros  par_dir exp;
+ 	
+ dec_proced = 
+ 	{proced_comando} dec_procedimento? procedimento id par_esq parametros par_dir comando
+ 	|{proced} procedimento id par_esq parametros par_dir pontoevirgula;
+
+ 
+ comando = 
+ 	{se_inicial} se par_esq exp par_dir comando
+ 	|{senao} estrutura_senao comando
+ 	|{enquanto} enquanto par_esq exp par_dir comando
+ 	|{atribuicao} id inicializacao exp pontoevirgula
+ 	|{chamda_id} chamada_opcional? chamada pontoevirgula
+ 	|{bloco} bloco; 
+ 	
+ bloco = 
+ 	{inicio} inicio estrutura_bloco fim;
+
+ estrutura_bloco = 
+ 	{atributos} atributos*
+ 	|{comando} comando*;
+ 
+ estrutura_senao = 
+ 	{senao} se par_esq exp par_dir comando senao;
+ 	
+ chamada = 
+ 	{chama} id par_esq lista_exp par_dir;
+ 	
+ lista_exp = 
+ 	{vazio_lista} vazio_n_ignorado
+ 	|{expr} exp
+ 	|{lista_exp} exp listas_exp;
+ 
+ listas_exp = 
+ 	{listas_exp} barra lista_exp;
+  
+ parametros = 
+ 	{parametro_nulo} vazio_n_ignorado
+ 	|{parametro} parametro conj_parametros*;
+ 
+ conj_parametros = 
+ 	{conj_parametros} barra parametro;
+
+ exp = 
+ 	{valor_real} real 
+ 	|{bool_verdade} verdade
+ 	|{bool_falso} falso
+ 	|{id} id 
+ 	|{chamda_id} chamada_opcional? chamada pontoevirgula
+ 	|{atributo_id} chamada_opcional? atributo pontoevirgula
+ 	|{expre} par_esq exp par_dir
+ 	|{negativo} menos exp
+	|{dif} diferente exp
+	|{op} [esq]:exp op [dir]:exp
+ 	|{bloco_exp} bloco_exp;
+ 	
+ chamada_opcional = 
+ 	{chamada} id ponto;
+ 
+ 	
+ op = 
+ 	{soma} soma
+ 	|{menos} menos
+ 	|{mult} mult
+ 	|{div} div
+ 	|{mod} mod
+ 	|{igualdade} igualdade
+ 	|{menor_que} menor_que
+ 	|{menor_igual_que} menor_igual_que
+ 	|{and} and
+ 	|{ou} ou; 
+ 
+ bloco_exp = 
+ 	{inicio_const} inicio dec_cons* exp fim;
+ 	
+ atributo = 
+ 	{atributo} id;
+ 
+ parametro = 
+ 	{parametro_bool} tipo id;
+
+
+ 	
+ 
+ 
+
+
+
+ 
+	
+
+
+	
+	
+ 
+
+  
+  
+  
+  
+  
+  
+
+   
+ 

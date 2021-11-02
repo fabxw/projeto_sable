@@ -1,0 +1,111 @@
+classe _Soma filha da classe _Cálculo & classe _Subtração filha da classe _Cálculo & classe _Multiplicação filha da classe _Cálculo & classe _Divisão filha da classe _Cálculo;
+
+classe _Cálculo
+
+início
+	var real númeroUm;
+	var real númeroDois;
+	
+	
+	procedimento setnúmeroUm (real novo_númeroUm)
+		númeroUm := novo_númeroUm;
+		
+	procedimento setnúmeroDois (real novo_númeroDois)
+		númeroDois := novo_númeroDois;
+		
+		#função abstrata
+		função real calcular();
+fim
+
+
+classe _Soma
+
+início
+	função real calcular() (númeroUm + númeroDois) 
+fim
+
+classe _Subtração
+
+início
+	função real calcular() (númeroUm - númeroDois) 
+fim
+
+classe _Multiplicação
+
+início
+	função real calcular() (númeroUm * númeroDois) 
+fim
+
+classe _Divisão
+
+início
+	função real calcular() (númeroUm / númeroDois) 
+fim
+
+classe _Módulo
+
+início
+	função real calcular() (númeroUm % númeroDois) 
+fim
+
+
+classe _Principal
+início
+	objeto _ES interface;
+
+	>>> procedimento principal ()
+	início
+						
+		objeto _Cálculo cálculo;
+		
+		var real numUm;
+		var real numDois;
+		
+		numUm := interface.lê();
+		numDois := interface.lê();
+		
+		
+		se(cálculo == 1)
+		início
+			objeto _Soma op;
+			cálculo:= op;
+			cálculo.calcular();
+		fim
+		
+		se(cálculo == 2)
+		início
+			objeto _Subtração op;
+			cálculo:= op;
+			cálculo.calcular();			
+		fim
+		
+		se(cálculo == 3)
+		início
+			objeto _Multiplicação op;
+			cálculo:= op;
+			cálculo.calcular();	
+		fim
+		
+		se(cálculo == 4)
+		início
+			objeto _Divisão op;
+			cálculo:= op;
+			cálculo.calcular();	
+		fim
+		
+		se(cálculo == 5)
+		início
+			objeto _Módulo op;
+			cálculo:= op;
+			cálculo.calcular();	
+		fim
+		
+			
+		enquanto (cálculo < 6) 
+		início
+		
+			interface.imprime(cálculo.calcular());
+			
+		fim
+	fim
+fim

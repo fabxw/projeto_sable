@@ -1,0 +1,55 @@
+classe _TabelaVerdade
+
+
+#essa merda 
+
+{
+Feito pelos alunos:
+Tiago Oliveira Vieira
+Fabrício Oliveira Caetano
+}
+
+início
+    var real númeroUm;
+    var real númeroDois;
+    const bool positivo := verdade;
+    
+    procedimento setnúmeroUm (real novo_númeroUm)
+        númeroUm := novo_númeroUm;
+        
+    procedimento setnúmeroDois (real novo_númeroDois)
+        númeroDois := novo_númeroDois;
+        
+fim
+
+classe _Principal
+início
+    objeto _ES interface;
+
+    >>> procedimento principal ()
+    início
+                        
+        objeto _TabelaVerdade tabelinha;
+        
+        se(tabelinha.númeroDois <= 0)
+        início
+       		interface.imprime('o número é negativo ou nulo');
+       	fim
+       	
+       	se(verdade e verdade)
+       	início
+       		inteface.imprime('Verdade');
+       	fim
+       	
+       	se(verdade ou verdade)
+       	início
+       		inteface.imprime('Verdade');
+       	fim
+       	
+       	se(2,5 ou 25e-2 ou 25E-2 ou 0,005)
+       	início
+       		inteface.imprime('número real');
+       	fim
+        
+    fim
+fim

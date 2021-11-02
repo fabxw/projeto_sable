@@ -1,0 +1,95 @@
+classe _Soma filha da classe _Cálculo & classe _Subtração filha da classe _Cálculo & classe _Multiplicação filha da classe _Cálculo & classe _Divisão filha da classe _Cálculo;
+
+classe _Cálculo
+
+início
+	var real número1;
+	var real número2;
+	
+	
+	procedimento setnúmero1 (real novo_número1)
+		número1 := novo_número1;
+		
+	procedimento setnúmero2 (real novo_número2)
+		número2 := novo_número2;
+		
+		#função abstrata
+		função real calcular();
+fim
+
+
+classe _Soma
+
+início
+	função real calcular() (número1 + número2) 
+fim
+
+classe _Subtração
+
+início
+	função real calcular() (número1 - número2) 
+fim
+
+classe _Multiplicação
+
+início
+	função real calcular() (número1 * número2) 
+fim
+
+classe _Divisão
+
+início
+	função real calcular() (número1 / número2) 
+fim
+
+classe _Múdulo
+
+início
+	função real calcular() (número1 % número2) 
+fim
+
+
+classe _Principal
+início
+	objeto _ES interface;
+
+	>>> procedimento principal ()
+	início
+						
+		objeto _Cálculo cálculo;
+		
+		var real num1;
+		var real num2;
+		
+		num1 := interface.lê();
+		num2 := interface.lê();
+		
+		
+		se(cálculo == 1)
+		início
+			cálculo._Soma(num1, num2)
+		fim
+		
+		se(cálculo == 2)
+		início
+			cálculo._Subtração(num1, num2)
+		fim
+		
+		se(cálculo == 3)
+		início
+			cálculo._Multiplicação(num1, num2)
+		fim
+		
+		se(cálculo == 4)
+		início
+			cálculo._Divisão(num1, num2)
+		fim
+			
+		enquanto (cálculo < 5) 
+		início
+		
+			interface.imprime(cálculo.calcular())
+			
+		fim
+	fim
+fim

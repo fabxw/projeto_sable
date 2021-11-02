@@ -1,0 +1,68 @@
+classe _Humano filha da classe _Animal & classe _Cachorro filha da classe _Animal;
+
+classe _Animal
+início
+
+	var real altura;
+	
+	procedimento setAltura (real nova_altura)
+		altura := nova_altura;
+		
+		#função abstrata
+		função real pesoEstimado();
+fim
+
+
+classe _Humano
+
+início
+	função real pesoEstimado() ((altura - 100) * 0,90)
+	
+
+fim
+
+classe _Cachorro
+início
+	função real pesoEstimado() ((altura) * 0,6) 
+fim
+
+classe _Principal
+início
+	objeto _ES interface;
+
+	>>> procedimento principal ()
+	início
+		var real espécie;
+		var real altura;
+				
+		objeto _Animal animal;
+		
+		espécie := interface.lê();
+		altura := interface.lê();
+		
+		
+		se(espécie == 0)
+		início
+			objeto _Humano h;
+			animal := h;
+		fim
+		senão
+		início
+			objeto _Cachorro c;
+			animal := c;
+		fim
+		
+		animal.setAltura(altura);
+		
+		interface.imprime(animal.pesoEstimado()); 
+		#essa fórmula não é precisa em termos de significado
+		#isso será alterado pois percebi que, pelas regras de herança, não dá pra chamar peso estimado a partir de _Animal.
+		
+		{
+		esse é
+		um 
+		teste de comentário
+		em blocoooo		
+		}
+	fim
+fim
